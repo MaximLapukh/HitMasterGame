@@ -9,7 +9,12 @@ public class Bullet : MonoBehaviour, IResetable
     [SerializeField] float _speed;
     [SerializeField] float _forceStrike = 100;
 
+    private Rigidbody _rigidbody;
     private float _destroyTime = 10;
+    private void Start()
+    {
+        _rigidbody = GetComponent<Rigidbody>();
+    }
     private void Update()
     {
         transform.Translate(Vector3.forward * _speed * Time.deltaTime);
@@ -43,6 +48,11 @@ public class Bullet : MonoBehaviour, IResetable
     {
         transform.rotation = Quaternion.Euler(Vector3.zero);
         transform.position = Vector3.zero;
+        if(_rigidbody != null)
+        {
+            _rigidbody.velocity = Vector3.zero;
+            _rigidbody.angularVelocity = Vector3.zero;
+        }
         DestroyDelegate = delegate { };
         _destroyTime = 10;
     }
